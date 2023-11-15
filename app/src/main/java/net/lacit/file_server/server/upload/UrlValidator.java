@@ -20,7 +20,7 @@ public class UrlValidator {
     }
 
     public void validateUrl(HttpExchange exchange) {
-        String pathUrl = exchange.getRequestURI().toString();
+        String pathUrl = exchange.getRequestURI().getPath();
         if (pathUrl.length() <= 1) {
             throw new BadRequestException("No file given");
         }
