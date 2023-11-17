@@ -14,8 +14,11 @@ import java.nio.file.Path;
 public class UploadServiceImpl implements UploadService {
     private final FilePathUtils filePathUtils;
 
-    public UploadServiceImpl(FilePathUtils filePathUtils) {
+    private final FileDownloader fileDownloader;
+
+    public UploadServiceImpl(FilePathUtils filePathUtils, FileDownloader fileDownloader) {
         this.filePathUtils = filePathUtils;
+        this.fileDownloader = fileDownloader;
     }
 
     @Override
@@ -45,8 +48,7 @@ public class UploadServiceImpl implements UploadService {
             Files.createFile(filePath);
         }
 
-        InputStream inputStream = exchange.getRequestBody();
-        Files.write(filePath, inputStream.readAllBytes());
+        fileDownloader.downloadFile(filePath, exchange.getRequestBody());
 
         String response = String.format("File %s has been downloaded successfully", filePath);
         exchange.sendResponseHeaders(200, response.getBytes().length);
