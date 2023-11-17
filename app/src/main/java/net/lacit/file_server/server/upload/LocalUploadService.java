@@ -32,7 +32,7 @@ public class LocalUploadService implements UploadService {
             throw new NotFoundException(String.format("File %s not found", filePath));
         }
         try {
-            fileLoader.load(fileName, exchange.getResponseBody());
+            fileLoader.load(filePath.toString(), exchange.getResponseBody());
             exchange.getResponseHeaders().set("Content-Disposition", String.format("attachment; filename=\"%s\"", fileName));
             exchange.sendResponseHeaders(200, 0);
         } catch (Exception e) {
