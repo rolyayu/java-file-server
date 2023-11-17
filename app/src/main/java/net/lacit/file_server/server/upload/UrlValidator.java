@@ -24,16 +24,16 @@ public class UrlValidator {
         if (pathUrl.length() <= 1) {
             throw new BadRequestException("No file given");
         }
+        int dotsCount = pathUrl.split("\\.").length - 1;
+        if (dotsCount != 1) {
+            throw new BadRequestException("Unsupported amount of files");
+        }
         String fileExtension = pathUrl.substring(pathUrl.lastIndexOf('.'));
         if (!CONTENT_TYPES_WITH_EXTENSIONS.containsValue(fileExtension)) {
             throw new UnsupportedMediaTypeException("Unsupported file extension");
         }
         if (exchange.getRequestMethod().equals("POST")) {
             validatePost(exchange, fileExtension);
-        }
-        int dotsCount = pathUrl.split("\\.").length - 1;
-        if (dotsCount != 1) {
-            throw new BadRequestException("Unsupported amount of files");
         }
     }
 
