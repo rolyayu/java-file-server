@@ -11,14 +11,14 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class UploadServiceImpl implements UploadService {
+public class LocalUploadService implements UploadService {
     private final FilePathUtils filePathUtils;
 
     private final FileDownloader fileDownloader;
 
     private final FileLoader fileLoader;
 
-    public UploadServiceImpl(FilePathUtils filePathUtils, FileDownloader fileDownloader, FileLoader fileLoader) {
+    public LocalUploadService(FilePathUtils filePathUtils, FileDownloader fileDownloader, FileLoader fileLoader) {
         this.filePathUtils = filePathUtils;
         this.fileDownloader = fileDownloader;
         this.fileLoader = fileLoader;
