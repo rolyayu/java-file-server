@@ -23,7 +23,7 @@ public class App {
     }
 
     private static void bootstrapServer() throws IOException {
-        PropertyReader reader = new PropertyReader();
+        PropertyReader reader = PropertyReader.getInstance();
         int port = Integer.parseInt(reader.readProperty("port").toString());
 
         Server server = new Server(port);

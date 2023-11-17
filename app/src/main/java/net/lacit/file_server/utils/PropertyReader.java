@@ -6,33 +6,31 @@ import java.util.Properties;
 
 public class PropertyReader {
 
-    private final String propertiesFile;
+    private final Properties properties;
 
-    private Properties properties;
+    private final String PROPERTIES_FILE = "application.properties";
 
-    public PropertyReader(String propertiesFile) {
-        this.propertiesFile = propertiesFile;
-        fillProperties();
+    private static class PropertyReaderHolder {
+        private static final PropertyReader INSTANCE = new PropertyReader();
     }
 
-    public PropertyReader() {
-        this.propertiesFile = "application.properties";
-        fillProperties();
+    public static PropertyReader getInstance() {
+        return PropertyReaderHolder.INSTANCE;
     }
 
-    private void fillProperties() {
-        try (InputStream input = PropertyReader.class.getClassLoader().getResourceAsStream(propertiesFile)) {
+    private PropertyReader() {
+        try (InputStream input = PropertyReader.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE)) {
             properties = new Properties();
             properties.load(input);
         } catch (IOException e) {
-            throw new RuntimeException(String.format("Error while reading %s: %s", propertiesFile, e.getMessage()));
+            throw new RuntimeException(String.format("Error while reading %s: %s", PROPERTIES_FILE, e.getMessage()));
         }
     }
 
     public Object readProperty(String key) throws RuntimeException {
         Object value = properties.get(key);
         if (value == null) {
-            throw new RuntimeException(String.format("Key %s in not" + " found in %s file", key, propertiesFile));
+            throw new RuntimeException(String.format("Key %s in not" + " found in %s file", key, PROPERTIES_FILE));
         }
         return value;
     }
