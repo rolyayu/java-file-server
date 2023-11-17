@@ -2,12 +2,7 @@ package net.lacit.file_server;
 
 import net.lacit.file_server.server.Server;
 import net.lacit.file_server.server.interfaces.Endpoint;
-import net.lacit.file_server.server.upload.UploadEndpoint;
-import net.lacit.file_server.server.upload.UploadService;
-import net.lacit.file_server.server.upload.UploadServiceImpl;
-import net.lacit.file_server.server.upload.UrlValidator;
-import net.lacit.file_server.server.upload.FileDownloader;
-import net.lacit.file_server.utils.FilePathUtils;
+import net.lacit.file_server.server.upload.*;
 import net.lacit.file_server.utils.PropertyReader;
 
 import java.io.IOException;
@@ -28,10 +23,9 @@ public class App {
 
         Server server = new Server(port);
         UrlValidator urlValidator = new UrlValidator();
-        FileDownloader fileDownloader = new FileDownloader();
-        FilePathUtils filePathUtils = new FilePathUtils(reader);
-        UploadService uploadService = new UploadServiceImpl(filePathUtils, fileDownloader);
-        Endpoint uploadEndpoint = new UploadEndpoint(uploadService, urlValidator);
+        UploadServiceFactory uploadServiceFactory = new LocalUploadServiceFactory();
+        UploadService localUploadService = uploadServiceFactory.getService();
+        Endpoint uploadEndpoint = new UploadEndpoint(localUploadService, urlValidator);
 
         server.addEndpoint(uploadEndpoint);
         server.start();
