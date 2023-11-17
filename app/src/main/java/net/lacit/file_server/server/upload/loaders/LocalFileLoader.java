@@ -10,5 +10,6 @@ public class LocalFileLoader implements FileLoader{
         try (InputStream stream = new FileInputStream(filePath.toFile())) {
             stream.transferTo(dest);
         }
+        dest.close();
     }
 }
